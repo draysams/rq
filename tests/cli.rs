@@ -8,5 +8,5 @@ fn echoes_the_arguments() {
         .expect("failed to run binary");
 
     let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(stdout.contains("You said hello"));
+    assert!(stdout.contains("You said: hello"));
 }
