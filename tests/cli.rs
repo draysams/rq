@@ -1,12 +1,22 @@
 use std::process::Command;
 
 #[test]
-fn echoes_the_arguments() {
+fn prints_file_contents() {
     let output = Command::new(env!("CARGO_BIN_EXE_rq"))
-        .arg("hello")
+        .arg("tests/fixtures/sample.txt")
         .output()
-        .expect("failed to run binary");
-
+        .unwrap();
     let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(stdout.contains("You said: hello"));
+    assert!(stdout.contains("hello from fixture"));
+}
+
+#[test]
+fn missing_file_exits_nonzero_without_panicking () {
+    let output = Command::new(env!("CARGO_BIN_EXE_rq"))
+        .arg("does/not/exist.txt")
+        .output()
+        .unwrap();
+    assert!(!output.status.success());
+    let stderr = String::from_utf8_lossy(&output.stdout);
+    assert!(!stderr.contains("panicked"));
 }
