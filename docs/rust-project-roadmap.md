@@ -291,7 +291,7 @@ mod grep_tests {
 
 **Read first:**
 
-- [clap derive tutorial](https://docs.rs/clap/latest/clap/_derive/index.html)
+- [clap derive tutorial](https://docs.rs/clap/latest/clap/_derive/index.html) — this is reference docs (exhaustive attribute list); start with the [cookbook](https://docs.rs/clap/latest/clap/_derive/_cookbook/index.html) instead for task-by-task examples. For any `docs.rs` crate, look in the left sidebar under the crate name for sections like `_derive`, `_cookbook`, `_tutorial` — these are the guided docs hidden inside the reference.
 - Book ch. 7: [Managing Growing Projects with Packages, Crates, and Modules](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html) — you'll want proper modules (`src/commands/`) around now.
 
 **Task:** Replace hand-rolled parsing with `clap`, using subcommands:

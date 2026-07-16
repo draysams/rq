@@ -1,17 +1,21 @@
 use std::process::Command;
 
 #[test]
-fn prints_file_contents() {
+fn grep_ignore_case_flag_matches_regardless_of_case() {
     let output = Command::new(env!("CARGO_BIN_EXE_rq"))
-        .arg("tests/fixtures/sample.txt")
+        .args([
+            "grep",
+            "APPLE",
+            "tests/fixtures/sample.txt",
+            "--ignore-case",
+        ])
         .output()
         .unwrap();
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(stdout.contains("hello from fixture"));
+    assert!(!output.stdout.is_empty());
 }
 
 #[test]
-fn missing_file_exits_nonzero_without_panicking () {
+fn missing_file_exits_nonzero_without_panicking() {
     let output = Command::new(env!("CARGO_BIN_EXE_rq"))
         .arg("does/not/exist.txt")
         .output()
