@@ -24,3 +24,28 @@ fn missing_file_exits_nonzero_without_panicking() {
     let stderr = String::from_utf8_lossy(&output.stdout);
     assert!(!stderr.contains("panicked"));
 }
+
+#[test]
+fn extract_a_column() {
+    let output = Command::new(env!("CARGO_BIN_EXE_rq"))
+        .args(["csv", "tests/fixtures/people.csv", "--column", "name"])
+        .output()
+        .unwrap();
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    assert!(&stdout.contains("Martha"));
+    assert!(&stdout.contains("Joshua"))
+}
+
+#[test]
+fn unknown_columns_extract_cleanly() {
+    let output = Command::new(env!("CARGO_BIN_EXE_rq"))
+        .args([
+            "csv",
+            "unknown",
+            "tests/fixtures/people.csv",
+            "--ignore-case",
+        ])
+        .output()
+        .unwrap();
+    assert!(!output.status.success())
+}

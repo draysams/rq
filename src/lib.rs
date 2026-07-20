@@ -1,7 +1,8 @@
-use std::fs;
+use serde::{Deserialize, Serialize};
+use std::fs::{self};
 
 pub fn read_file_content(file_path: &str) -> String {
-    return fs::read_to_string(&file_path).expect("File should exist");
+    fs::read_to_string(file_path).expect("File should exist")
 }
 
 pub fn count_stats(content: &str) -> (usize, usize, usize) {
@@ -20,6 +21,23 @@ pub fn grep_lines<'a>(pattern: &str, content: &'a str) -> Vec<&'a str> {
         }
     }
     found_lines.to_vec()
+}
+
+pub fn read_people<R: std::io::Read>(
+    reader: &mut csv::Reader<R>,
+) -> Result<Vec<Person>, Box<dyn std::error::Error>> {
+    let mut results = Vec::new();
+    for result in reader.deserialize::<Person>() {
+        let person = result?;
+        results.push(person);
+    }
+    Ok(results)
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Person {
+    pub name: String,
+    pub city: String,
 }
 
 #[cfg(test)]

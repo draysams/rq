@@ -349,8 +349,8 @@ pass against the new interface.
 ```rust
 // tests/fixtures/people.csv
 // name,age,city
-// Dray,30,Longford
-// Ada,29,Dublin
+// Selene,30,St. Petersburg
+// Ada,29,Concourse
 
 #[test]
 fn extracts_a_column() {
@@ -359,7 +359,7 @@ fn extracts_a_column() {
         .output()
         .unwrap();
     let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(stdout.contains("Dray"));
+    assert!(stdout.contains("Selene"));
     assert!(stdout.contains("Ada"));
 }
 

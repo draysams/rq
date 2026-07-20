@@ -1,6 +1,6 @@
 use clap::{Parser, Subcommand};
 
-use rq::{count_stats, grep_lines, read_file_content};
+use rq::{count_stats, grep_lines, read_file_content, read_people};
 fn main() {
     let cli = Cli::parse();
 
@@ -27,6 +27,21 @@ fn main() {
             let (lines, words, chars) = count_stats(&file_content);
             println!("lines: {}  words: {}  chars: {}", lines, words, chars);
         }
+        Commands::Csv { path, column } => {
+            let mut reader = csv::Reader::from_path(path).expect("Could not open file");
+            let people = read_people(&mut reader).expect("Could not read people");
+            for person in people {
+                let value = match column.as_str() {
+                    "name" => &person.name,
+                    "city" => &person.city,
+                    _ => {
+                        eprintln!("unknown column: {}", column);
+                        std::process::exit(1)
+                    }
+                };
+                println!("{}", value);
+            }
+        }
     }
 }
 
@@ -46,5 +61,10 @@ enum Commands {
     },
     Count {
         path: String,
+    },
+    Csv {
+        path: String,
+        #[arg(long)]
+        column: String,
     },
 }
